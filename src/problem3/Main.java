@@ -1,0 +1,127 @@
+package problem3;
+
+import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
+
+// 本地测试和牛客提交代码一致，无须修改相关
+public class Main {
+    static BufferedReader reader = getReader(); //初始化流
+    static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+
+
+    public static void main(String[] args) throws IOException {
+        int t = getNextInt();
+        for (int i = 0; i < t; i++) {
+            int[] params = getNextArr();
+            int x = params[0];
+            int a = params[1];
+            int b = params[2];
+            int n = params[3];
+            solution(x, a, b, n);
+        }
+
+        close();    //释放流资源
+    }
+
+    /**
+     * 核心函数：题目的核心逻辑
+     */
+    static void solution(int x, int a, int b, int n) throws IOException {
+        Queue<State> queue = new LinkedList<>();
+        //第1小时休息
+        queue.add(new State(Math.max(x - a, 0), x, 1));
+        //第1小时练习
+        queue.add(new State(x + b, 0, 1));
+        int res = 0;
+
+        while (!queue.isEmpty()) {
+            State cur = queue.remove();
+            if (cur.hourCnt == n) {
+                //记录最后1小时的最大利润
+                res = Math.max(res, cur.profit);
+                continue;
+            }
+            //本轮休息
+            queue.add(new State(cur.state + b, cur.profit, cur.hourCnt + 1));
+            //本轮练习
+            queue.add(new State(Math.max(0, cur.state - a), cur.profit + cur.state, cur.hourCnt + 1));
+        }
+        print(res);
+        newLine();
+    }
+
+    //状态对象
+    static class State {
+        int state = 0;  //x的值
+        int profit = 0;
+        int hourCnt = 0;
+
+        public State(int state, int profit, int hourCnt) {
+            this.state = state;
+            this.profit = profit;
+            this.hourCnt = hourCnt;
+        }
+    }
+
+
+//-------------------------------------------------以下为IO工具方法------------------------------------------------------------------
+
+
+    //打印数字
+    static void print(int num) throws IOException {
+        writer.write("" + num);
+    }
+
+    //打印字符串
+    static void print(String str) throws IOException {
+        writer.write(str);
+    }
+
+    static void newLine() throws IOException {
+        writer.newLine();
+    }
+
+    /**
+     * @return 返回扫描src目录下test.txt（存放用于测试的本地用例）的Reader
+     */
+    static BufferedReader getReader() {
+        try {
+            return new BufferedReader(new FileReader("src/problem3/test.txt"));
+        } catch (FileNotFoundException e) {
+            //代码粘贴到牛客里，使用的是System.in使用
+            return new BufferedReader(new InputStreamReader(System.in));
+        }
+    }
+
+    /**
+     * @return 获取下一行的单个int数据
+     */
+    static int getNextInt() throws IOException {
+        return Integer.parseInt(reader.readLine());
+    }
+
+    /**
+     * 获取input的下一行数据，并以空格分割字符串后转为int数组
+     *
+     * @return 分割后的字符串转为的int数组
+     */
+    static int[] getNextArr() throws IOException {
+        String[] arr = reader.readLine().split(" ");
+        int[] res = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            res[i] = Integer.parseInt(arr[i]);
+        }
+        return res;
+    }
+
+    /**
+     * 释放流
+     *
+     * @throws IOException
+     */
+    static void close() throws IOException {
+        reader.close();
+        writer.close();
+    }
+}
