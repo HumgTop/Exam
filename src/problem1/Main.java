@@ -1,12 +1,15 @@
+package problem1;
+
 import java.io.*;
 
 // 本地测试和牛客提交代码一致，无须修改相关
-public class Main3 {
+public class Main {
     static BufferedReader reader = getReader(); //初始化流
     static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
 
     public static void main(String[] args) throws IOException {
+
 
         close();    //释放流资源
     }
@@ -14,7 +17,7 @@ public class Main3 {
     /**
      * 核心函数：题目的核心逻辑
      */
-    static void solution(int n, int[] length, int[] width) throws IOException {
+    static void solution() throws IOException {
 
     }
 
@@ -41,7 +44,7 @@ public class Main3 {
      */
     static BufferedReader getReader() {
         try {
-            return new BufferedReader(new FileReader("src/test.txt"));
+            return new BufferedReader(new FileReader("src/problem1/test.txt"));
         } catch (FileNotFoundException e) {
             //代码粘贴到牛客里，使用的是System.in使用
             return new BufferedReader(new InputStreamReader(System.in));

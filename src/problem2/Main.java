@@ -1,5 +1,6 @@
+package problem2;
+
 import java.io.*;
-import java.util.Arrays;
 
 // 本地测试和牛客提交代码一致，无须修改相关
 public class Main {
@@ -9,17 +10,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-
         close();    //释放流资源
     }
 
     /**
      * 核心函数：题目的核心逻辑
      */
-    static void solution(String s, int subLen, long n) throws IOException {
+    static void solution() throws IOException {
 
     }
-
 
 
 //-------------------------------------------------以下为IO工具方法------------------------------------------------------------------
@@ -44,7 +43,7 @@ public class Main {
      */
     static BufferedReader getReader() {
         try {
-            return new BufferedReader(new FileReader("src/test.txt"));
+            return new BufferedReader(new FileReader("src/problem2/test.txt"));
         } catch (FileNotFoundException e) {
             //代码粘贴到牛客里，使用的是System.in使用
             return new BufferedReader(new InputStreamReader(System.in));
