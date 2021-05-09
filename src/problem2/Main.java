@@ -9,16 +9,60 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-
+        int[] params = getNextArr();
+        int n = params[0];
+        int m = params[1];
+        int h = params[2];
+        int[] height = getNextArr();
+        solution(n, m, h, height);
 
         close();    //释放流资源
     }
 
     /**
-     * 核心函数：题目的核心逻辑
+     * @param n      n个木桩
+     * @param m      家具宽度
+     * @param h      可通过围栏最大高度
+     * @param height 围栏高度数组
      */
-    static void solution(int x, int a, int b, int n) throws IOException {
+    static void solution(int n, int m, int h, int[] height) throws IOException {
+        //滑动窗口：窗口内的值<=h，当窗口长度为m时，返回left
+        int left = 0, right = 0;
+        for (int i = 0; i < height.length; i++) {
+            if (height[i] <= h) {
+                left = i;
+                right = i;
+                break;
+            }
+        }
+        if (left == 0) {
+            print(-1);
+        }
 
+        int wndLen = 1; //维护窗口的实时长度
+        while (left < height.length) {
+            if (height[left] > h) {
+                left++;
+                continue;
+            }
+            right = left + 1;
+            //此时height[left]<=h，移动right
+            while (right < height.length && height[right] <= h) {
+                right++;
+                if ((wndLen = right - left) == m) {
+                    print(left + 1);
+                    newLine();
+                    return;
+                }
+            }
+            if (right == height.length) {
+                print(-1);
+                newLine();
+            }
+            //此时height[right]>h
+            //重置left，找到新的开始点
+            left = right + 1;
+        }
     }
 
 
@@ -44,7 +88,7 @@ public class Main {
      */
     static BufferedReader getReader() {
         try {
-            return new BufferedReader(new FileReader("src/problem3/test.txt"));
+            return new BufferedReader(new FileReader("src/problem2/test.txt"));
         } catch (FileNotFoundException e) {
             //代码粘贴到牛客里，使用的是System.in使用
             return new BufferedReader(new InputStreamReader(System.in));
