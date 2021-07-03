@@ -9,8 +9,7 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-
-
+        print("hi");
         close();    //释放流资源
     }
 
