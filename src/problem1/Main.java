@@ -1,76 +1,34 @@
 package problem1;
 
-import java.io.*;
+import java.util.HashMap;
 
-// 本地测试和牛客提交代码一致，无须修改相关
 public class Main {
-    static BufferedReader reader = getReader(); //初始化流
-    static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-
-
-    public static void main(String[] args) throws IOException {
-
-
-        close();    //释放流资源
+    public static void main(String[] args) {
+        int[][] arr = {{2, 1, 5}, {3, 3, 7}};
+        System.out.println(solution(arr, 5));
     }
 
-//-------------------------------------------------以下为IO工具方法------------------------------------------------------------------
-
-
-    //打印数字
-    static void print(int num) throws IOException {
-        writer.write("" + num);
-    }
-
-    //打印字符串
-    static void print(String str) throws IOException {
-        writer.write(str);
-    }
-
-    static void newLine() throws IOException {
-        writer.newLine();
-    }
-
-    /**
-     * @return 返回扫描src目录下test.txt（存放用于测试的本地用例）的Reader
-     */
-    static BufferedReader getReader() {
-        try {
-            return new BufferedReader(new FileReader("src/problem1/test.txt"));
-        } catch (FileNotFoundException e) {
-            //代码粘贴到牛客里，使用的是System.in使用
-            return new BufferedReader(new InputStreamReader(System.in));
+    public static boolean solution(int[][] load, int capacity) {
+        int maxEnd = 0;
+        HashMap<Integer, Integer> start = new HashMap<>();  //key为起点，value为加载重量
+        HashMap<Integer, Integer> end = new HashMap<>();    //key为终点，value为卸载重量
+        for (int[] each : load) {
+            maxEnd = Math.max(maxEnd, each[2]);
+            start.put(each[1], start.getOrDefault(each[1], 0) + each[0]);
+            end.put(each[2], start.getOrDefault(each[2], 0) + each[0]);
         }
-    }
 
-    /**
-     * @return 获取下一行的单个int数据
-     */
-    static int getNextInt() throws IOException {
-        return Integer.parseInt(reader.readLine());
-    }
-
-    /**
-     * 获取input的下一行数据，并以空格分割字符串后转为int数组
-     *
-     * @return 分割后的字符串转为的int数组
-     */
-    static int[] getNextArr() throws IOException {
-        String[] arr = reader.readLine().split(" ");
-        int[] res = new int[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            res[i] = Integer.parseInt(arr[i]);
+        int curWeight = 0;
+        for (int i = 0; i <= maxEnd; i++) {
+            int up = start.getOrDefault(i, 0);
+            int down = end.getOrDefault(i, 0);
+            curWeight = curWeight - down + up;
+            if (curWeight > capacity) {
+                return false;
+            }
         }
-        return res;
-    }
+        return true;
 
-    /**
-     * 释放流
-     *
-     * @throws IOException
-     */
-    static void close() throws IOException {
-        reader.close();
-        writer.close();
+
     }
 }
