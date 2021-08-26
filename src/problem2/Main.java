@@ -1,6 +1,8 @@
 package problem2;
 
 import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 // 本地测试和牛客提交代码一致，无须修改相关
 public class Main {
@@ -9,10 +11,62 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
+        int n = getNextInt();
+        int[] degrees = new int[n]; //记录任务i的依赖的任务数
+        boolean[] seen = new boolean[n];
 
+        HashMap<Integer, Set<Integer>> map = new HashMap<>();
+        int[] times = new int[n];
+        for (int i = 0; i < n; i++) {
+            String s = reader.readLine();
+            String[] split = s.split(" ");
+            times[i] = Integer.parseInt(split[1]);
+            String[] arr = split[0].split(",");
+            degrees[i] = arr.length;
+            //遍历前驱节点
+            for (String val : arr) {
+                int preTaskIdx = Integer.parseInt(val);
+                if (preTaskIdx == -1) {
+                    degrees[i] = 0;
+                }
+                map.computeIfAbsent(preTaskIdx, k -> new HashSet<>()).add(i);
+            }
+        }
+
+        System.out.println(solution(n, degrees, map, times));
         close();    //释放流资源
     }
 
+    private static int solution(int n, int[] degrees, HashMap<Integer, Set<Integer>> map, int[] times) {
+        Queue<Integer> queue = new LinkedList<>();
+        int[] dp = new int[n];  //dp[i]表示完成任务i所需要的时间
+        for (int i = 0; i < degrees.length; i++) {
+            if (degrees[i] == 0) {
+                queue.add(i);
+                //第一批任务没有前置执行时间
+                dp[i] = times[i];
+            }
+        }
+
+        int cnt = 0;
+        while (!queue.isEmpty()) {
+            cnt++;
+            Integer taskIdx = queue.remove();
+            //如果当前节点无后继节点则跳过
+            if (!map.containsKey(taskIdx)) continue;
+
+            for (int nextTaskIdx : map.get(taskIdx)) {
+                degrees[nextTaskIdx] -= 1;
+                dp[nextTaskIdx] = Math.max(dp[nextTaskIdx], dp[taskIdx] + times[nextTaskIdx]); //刷新下个任务的执行时间
+                if (degrees[nextTaskIdx] == 0) {
+                    queue.add(nextTaskIdx);
+                }
+            }
+        }
+        if (cnt != n) return -1;    //说明存在环（循环依赖）
+
+        return Arrays.stream(dp).max().getAsInt();
+    }
 
 
 //-------------------------------------------------以下为IO工具方法------------------------------------------------------------------

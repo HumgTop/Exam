@@ -9,8 +9,13 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-
-
+        int[] params = getNextArr();
+        int row = params[0];
+        int col = params[1];
+        int[][] matrix = new int[row][col];
+        for (int i = 0; i < row; i++) {
+            matrix[i] = getNextArr();
+        }
         close();    //释放流资源
     }
 
