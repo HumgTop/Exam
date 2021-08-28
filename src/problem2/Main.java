@@ -2,7 +2,6 @@ package problem2;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 // 本地测试和牛客提交代码一致，无须修改相关
 public class Main {
@@ -12,10 +11,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         int n = getNextInt();
-        int[] degrees = new int[n]; //记录任务i的依赖的任务数
-        boolean[] seen = new boolean[n];
+        int[] degrees = new int[n]; //记录任务i的依赖的任务数（入度）
 
-        HashMap<Integer, Set<Integer>> map = new HashMap<>();
+        Map<Integer, Set<Integer>> map = new HashMap<>();   //key为任务id，value为其后继节点集合
         int[] times = new int[n];
         for (int i = 0; i < n; i++) {
             String s = reader.readLine();
@@ -26,8 +24,10 @@ public class Main {
             //遍历前驱节点
             for (String val : arr) {
                 int preTaskIdx = Integer.parseInt(val);
+                //如果没有前驱节点
                 if (preTaskIdx == -1) {
                     degrees[i] = 0;
+                    continue;
                 }
                 map.computeIfAbsent(preTaskIdx, k -> new HashSet<>()).add(i);
             }
@@ -37,7 +37,7 @@ public class Main {
         close();    //释放流资源
     }
 
-    private static int solution(int n, int[] degrees, HashMap<Integer, Set<Integer>> map, int[] times) {
+    private static int solution(int n, int[] degrees, Map<Integer, Set<Integer>> map, int[] times) {
         Queue<Integer> queue = new LinkedList<>();
         int[] dp = new int[n];  //dp[i]表示完成任务i所需要的时间
         for (int i = 0; i < degrees.length; i++) {
