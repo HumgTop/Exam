@@ -9,9 +9,22 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-
-
+        int k = getNextInt();   //队列长度
+        String s = reader.readLine();
+        String[] s1 = s.split(" ");
+        int[][] params = new int[k][2];
+        for (int i = 0; i < s1.length; i++) {
+            String[] split = s1[i].split(",");
+            params[i][0] = Integer.parseInt(split[0]);
+            params[i][1] = Integer.parseInt(split[1]);
+        }
+        int a = getNextInt();   //发送的数据包总量
+        System.out.println(solution(k, a, params));
         close();    //释放流资源
+    }
+
+    private static int solution(int k, int a, int[][] params) {
+        return 0;
     }
 
 

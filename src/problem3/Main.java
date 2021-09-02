@@ -10,11 +10,16 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
+        int m = getNextInt();
+        int n = getNextInt();
+        int[][] matrix = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            matrix[i] = getNextArr();
+        }
 
 
         close();    //释放流资源
     }
-
 
 
 //-------------------------------------------------以下为IO工具方法------------------------------------------------------------------
