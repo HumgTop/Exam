@@ -1,36 +1,51 @@
 package problem2;
 
 import java.io.*;
+import java.util.ArrayList;
 
 // 本地测试和牛客提交代码一致，无须修改相关
 public class Main {
     static BufferedReader reader = getReader(); //初始化流
-    static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
 
     public static void main(String[] args) throws IOException {
-
-        close();    //释放流资源
+        int n = getNextInt();
+        for (int i = 0; i < n; i++) {
+            String input = reader.readLine();
+            System.out.println(solution(input));
+        }
     }
 
+    private static String solution(String input) {
+        char[] chs = input.toCharArray();
+        ArrayList<Character> list = new ArrayList<>();
+        for (int i = 0; i < chs.length; i++) {
+            if (1 <= chs[i] - '0' && chs[i] - '0' <= 3) {
+                list.add(chs[i]);
+            } else if (chs[i] - '0' > 3) {
+                list.add('3');
+            } else {
+                //当前位为0
+                Character cur = list.get(i - 1);
+                list.set(i - 1, (char) ((int) cur - 1));    //前位减一，后位全置3
+                while (i < chs.length) {
+                    list.add('3');
+                    i++;
+                }
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Character ch : list) {
+            if (ch == '0') continue;
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
 
 
 //-------------------------------------------------以下为IO工具方法------------------------------------------------------------------
 
-
-    //打印数字
-    static void print(int num) throws IOException {
-        writer.write("" + num);
-    }
-
-    //打印字符串
-    static void print(String str) throws IOException {
-        writer.write(str);
-    }
-
-    static void newLine() throws IOException {
-        writer.newLine();
-    }
 
     /**
      * @return 返回扫描src目录下test.txt（存放用于测试的本地用例）的Reader
@@ -65,13 +80,4 @@ public class Main {
         return res;
     }
 
-    /**
-     * 释放流
-     *
-     * @throws IOException
-     */
-    static void close() throws IOException {
-        reader.close();
-        writer.close();
-    }
 }

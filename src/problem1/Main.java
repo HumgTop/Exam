@@ -5,32 +5,32 @@ import java.io.*;
 // 本地测试和牛客提交代码一致，无须修改相关
 public class Main {
     static BufferedReader reader = getReader(); //初始化流
-    static BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
 
     public static void main(String[] args) throws IOException {
+        int[] params = getNextArr();
+        int n = params[0];
+        int k = params[1];
+        int[][] res = new int[n * k][n * k];
+        for (int i = 0; i < n; i++) {
+            int[] cur = getNextArr();
+            for (int j = 0; j < n; j++) {
+                for (int p = 0; p < k; p++) {
+                    for (int l = 0; l < k; l++) {
+                        res[i * k + p][j * k + l] = cur[j];
+                    }
+                }
+            }
+        }
 
-
-        close();    //释放流资源
+        for (int i = 0; i < n * k; i++) {
+            for (int j = 0; j < n * k; j++) {
+                System.out.print(res[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
-
-//-------------------------------------------------以下为IO工具方法------------------------------------------------------------------
-
-
-    //打印数字
-    static void print(int num) throws IOException {
-        writer.write("" + num);
-    }
-
-    //打印字符串
-    static void print(String str) throws IOException {
-        writer.write(str);
-    }
-
-    static void newLine() throws IOException {
-        writer.newLine();
-    }
 
     /**
      * @return 返回扫描src目录下test.txt（存放用于测试的本地用例）的Reader
@@ -63,15 +63,5 @@ public class Main {
             res[i] = Integer.parseInt(arr[i]);
         }
         return res;
-    }
-
-    /**
-     * 释放流
-     *
-     * @throws IOException
-     */
-    static void close() throws IOException {
-        reader.close();
-        writer.close();
     }
 }

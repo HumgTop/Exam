@@ -1,6 +1,7 @@
 package problem4;
 
 import java.io.*;
+import java.util.Stack;
 
 // 本地测试和牛客提交代码一致，无须修改相关
 public class Main {
@@ -9,10 +10,49 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
+        int n = getNextInt();
+        for (int i = 0; i < n; i++) {
+            String input = reader.readLine();
+            System.out.println(solution(input));
+        }
 
-        close();    //释放流资源
     }
 
+    private static String solution(String input) {
+        Stack<Character> stack = new Stack<>();
+        boolean flag = false;
+        char[] chs = input.toCharArray();
+        for (char ch : chs) {
+            if (flag) {
+                stack.push('3');
+            } else if (ch >= '1' && ch <= '3') {
+                stack.push(ch);
+            } else if (ch == '0') {
+                int cnt = 0;
+                while (!stack.isEmpty()) {
+                    char cur = stack.pop();
+                    cnt++;
+                    if (cur > '1') {
+                        stack.push((char) (cur - 1));
+                        break;
+                    }
+                }
+                while (cnt-- > 0) {
+                    stack.push('3');
+                }
+                flag = true;
+            } else if (ch > '3') {
+                stack.push('3');
+                flag = true;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
+        }
+        return sb.reverse().toString();
+    }
 
 
 //-------------------------------------------------以下为IO工具方法------------------------------------------------------------------

@@ -10,11 +10,19 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
+        int[] params = getNextArr();
+        int n = params[0];  //字符串长度为n
+        int k = params[1];  //k种字母
+        String s = reader.readLine();
+        System.out.println(solution(s, n, k));
 
-
-        close();    //释放流资源
     }
 
+    private static int solution(String s, int n, int k) {
+        char[] chs = s.toCharArray();
+        int[] seen = new int[26];   //窗口中存在的元素标记为1
+        return 0;
+    }
 
 
 //-------------------------------------------------以下为IO工具方法------------------------------------------------------------------
